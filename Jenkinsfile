@@ -1,3 +1,5 @@
+def dockerImage
+
 pipeline {
     agent any
 
@@ -18,15 +20,17 @@ pipeline {
         }
         stage ('Build Docker Image') {
             steps {
-                sh 'docker build -t krishnapramod/ci-cd-node-app --no-cache .'
+                script {
+                    dockerImage = docker.build('krishnapramod/ci-cd-node-app', '--no-cache .')
+                }
             }
         }
         stage ('Push to Dockerhub') {
             steps {
-                sh """
-                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
-                    docker push krishnapramod/ci-cd-node-app
-                """
+                script {
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+                dockerImage.push()
             }
         }
     }
