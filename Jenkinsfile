@@ -9,6 +9,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhubcredentials')
+        dockerImage = 'krishnapramod/ci-cd-node-app'
     }
 
     stages {
@@ -20,18 +21,16 @@ pipeline {
         }
         stage ('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.build('krishnapramod/ci-cd-node-app', '--no-cache .')
-                }
+                sh 'docker build -t $dockerImage --no-cache .'
             }
         }
         stage ('Push to Dockerhub') {
             steps {
                 echo 'Pushing to Dockerhub'
-                script {
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    dockerImage.push()
-                }
+                sh """
+                    echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+                    docker push $dockerImage
+                """
             }
         }
     }
