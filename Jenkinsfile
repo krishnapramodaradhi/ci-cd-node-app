@@ -13,6 +13,10 @@ pipeline {
     }
 
     stages {
+        stage('Initialize') {
+            def dockerHome = tool 'docker'
+            env.PATH = ${dockerHome}/bin:${env.PATH}
+        }
         stage('Git Checkout') {
             steps {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/krishnapramodaradhi/ci-cd-node-app']])
