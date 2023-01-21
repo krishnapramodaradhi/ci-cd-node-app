@@ -1,5 +1,6 @@
 const http = require('http');
 
+const PORT = process.env.PORT || 8000;
 const server = http.createServer((req, res) => {
   console.log('Request reached your server');
   console.log(req.headers.host);
@@ -17,6 +18,6 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(8000, () => {
-  console.log('Magic 🪄 happens on port 8000');
+server.listen(PORT, () => {
+  console.log(`Magic 🪄 happens on port ${PORT}`);
 });
