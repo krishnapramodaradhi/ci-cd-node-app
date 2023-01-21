@@ -27,10 +27,11 @@ pipeline {
         }
         stage ('Push to Dockerhub') {
             steps {
+                echo 'Pushing to Dockerhub'
                 script {
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    dockerImage.push()
                 }
-                dockerImage.push()
             }
         }
     }
