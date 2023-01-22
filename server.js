@@ -11,7 +11,7 @@ const server = http.createServer((req, res) => {
     } else if (req.url === '/hello') {
       return res.end('Hello from the server');
     }
-    res.end('Hello world from the server');
+    res.end('Hello world from the server🎉');
   } catch (err) {
     console.log('An unknown error occured', err);
     res.end('Thanks!!');
